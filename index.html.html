@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guía Maestra 2026 — Coleccionismo de Alto Nivel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --surface2: #1a1a1a;
+      --border: rgba(197,160,70,0.15);
+      --border-hover: rgba(197,160,70,0.35);
+      --gold: #c5a046;
+      --gold-light: #e8c97a;
+      --gold-dim: rgba(197,160,70,0.1);
+      --red: #c0392b;
+      --red-dim: rgba(192,57,43,0.12);
+      --green: #27ae60;
+      --green-dim: rgba(39,174,96,0.1);
+      --text: #ede8df;
+      --text-muted: #7a7060;
+      --text-hint: #4a4540;
+      --radius: 10px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Sora', sans-serif; min-height: 100vh; }
+
+    /* HERO */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 260px;
+      background: radial-gradient(ellipse, rgba(197,160,70,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 10px; letter-spacing: 0.3em; color: var(--gold);
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 700; color: var(--gold-light); line-height: 1.15; margin-bottom: 6px;
+    }
+    .hero-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 0.05em; }
+    .disclaimer {
+      display: inline-block;
+      font-size: 11px; color: var(--text-hint);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 6px 14px; margin-top: 4px;
+    }
+
+    /* NAV */
+    .nav {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      display: flex; overflow-x: auto; gap: 4px; padding: 10px 1rem;
+      scrollbar-width: none; position: sticky; top: 0; z-index: 10;
+      justify-content: center;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0; padding: 7px 14px;
+      border: 1px solid transparent; border-radius: 99px;
+      background: transparent; color: var(--text-muted);
+      font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); border-color: var(--border-hover); }
+    .tab-btn.active { background: var(--gold-dim); color: var(--gold); border-color: var(--border-hover); }
+
+    /* MAIN */
+    .main { max-width: 700px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+    .section { display: none; animation: fadeIn 0.2s ease; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+    /* CHAPTER HEADER */
+    .chap-header {
+      border-left: 3px solid var(--gold); padding: 4px 0 4px 14px; margin-bottom: 1.5rem;
+    }
+    .chap-label { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); letter-spacing: 0.2em; margin-bottom: 4px; }
+    .chap-title { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold-light); font-weight: 600; }
+    .chap-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+    /* STAT GRID */
+    .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+    .stat-label { font-size: 10px; color: var(--text-hint); margin-bottom: 5px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .stat-val { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); }
+
+    /* QUOTE */
+    .quote-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;
+    }
+    .quote-text { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--gold-light); line-height: 1.5; margin-bottom: 8px; }
+    .quote-author { font-size: 11px; color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; }
+
+    /* FORMULA */
+    .formula-box {
+      background: var(--surface); border: 1px solid var(--gold); border-radius: var(--radius);
+      padding: 1.5rem; text-align: center; margin-bottom: 1.5rem;
+    }
+    .formula-label { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); letter-spacing: 0.2em; margin-bottom: 14px; }
+    .formula-row { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .formula-item { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold-light); font-weight: 600; }
+    .formula-plus { color: var(--gold); font-size: 1.2rem; }
+    .formula-note { font-size: 12px; color: var(--text-muted); margin-top: 12px; font-style: italic; }
+
+    /* TWO COL */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+    .col-card.wrong { border-color: rgba(192,57,43,0.3); }
+    .col-card.right { border-color: rgba(39,174,96,0.3); }
+    .col-title { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.15em; margin-bottom: 12px; }
+    .col-title.red { color: var(--red); }
+    .col-title.green { color: var(--green); }
+    .col-title.gold { color: var(--gold); }
+    .col-item { font-size: 13px; color: var(--text-muted); padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.5; }
+    .col-item:last-child { border-bottom: none; }
+
+    /* STEP LIST */
+    .step-list { list-style: none; }
+    .step-item { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .step-item:last-child { border-bottom: none; }
+    .step-num {
+      min-width: 30px; height: 30px; border-radius: 50%;
+      background: var(--gold-dim); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); flex-shrink: 0;
+    }
+    .step-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+    /* RARITY TABLE */
+    .rarity-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; }
+    .rarity-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
+    .rarity-row:last-child { border-bottom: none; }
+    .rarity-row:hover { background: var(--surface2); }
+    .badge { font-family: 'Cinzel', serif; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em; min-width: 54px; text-align: center; }
+    .badge-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border); }
+    .badge-blue { background: rgba(52,152,219,0.1); color: #5dade2; border: 1px solid rgba(52,152,219,0.2); }
+    .badge-purple { background: rgba(155,89,182,0.1); color: #a569bd; border: 1px solid rgba(155,89,182,0.2); }
+    .badge-red { background: var(--red-dim); color: #e74c3c; border: 1px solid rgba(192,57,43,0.2); }
+    .badge-gray { background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.06); }
+    .rarity-name { font-size: 13px; font-weight: 600; color: var(--text); min-width: 140px; }
+    .rarity-desc { font-size: 12px; color: var(--text-muted); flex: 1; line-height: 1.5; }
+    .rarity-price { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); text-align: right; min-width: 70px; }
+
+    /* TIP BOX */
+    .tip-box {
+      background: var(--gold-dim); border: 1px solid var(--border); border-left: 3px solid var(--gold);
+      border-radius: var(--radius); padding: 12px 16px; margin: 1.2rem 0;
+      font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    }
+    .tip-box strong { color: var(--gold-light); }
+
+    /* ALERT BOX */
+    .alert-box {
+      background: var(--red-dim); border: 1px solid rgba(192,57,43,0.3); border-left: 3px solid var(--red);
+      border-radius: var(--radius); padding: 12px 16px; margin: 1.2rem 0;
+      font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    }
+    .alert-box strong { color: #e74c3c; }
+
+    /* THREE COL */
+    .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .three-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
+    .three-card.featured { border-color: rgba(197,160,70,0.4); }
+    .three-card-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); letter-spacing: 0.12em; margin-bottom: 8px; }
+    .three-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+    /* GRADING TABLE */
+    .grade-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+    .grade-table th { font-family: 'Cinzel', serif; font-size: 11px; color: var(--gold); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .grade-table td { font-size: 13px; color: var(--text-muted); padding: 11px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .grade-table tr:last-child td { border-bottom: none; }
+    .grade-table tr:hover td { color: var(--text); }
+
+    /* SECTION DIVIDER */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+    /* FINAL MESSAGES */
+    .final-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .final-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+    .final-icon { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 8px; }
+    .final-text { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* FOOTER */
+    .footer {
+      text-align: center; padding: 2rem 1rem;
+      font-family: 'Cinzel', serif; font-size: 10px; color: var(--text-hint);
+      border-top: 1px solid var(--border); letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 500px) {
+      .two-col, .three-col, .final-grid { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-eyebrow">Juan Mercatudo · Guía Maestra</div>
+  <img src="data:image/png;base64,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" alt="Mercatudo" style="height:80px; width:320px; object-fit:contain; display:block; margin:0 auto 16px; filter:brightness(0) invert(1);" />
+  <h1>COLECCIONISMO<br>DE ALTO NIVEL</h1>
+  <div class="hero-sub">Guía Maestra 2026 · Estrategias, Preservación y Mentalidad de Éxito</div>
+  <div class="disclaimer">Esta guía no representa ni da consejos de inversión. Es coleccionismo como estilo de vida y hobby.</div>
+</header>
+
+<nav class="nav">
+  <button class="tab-btn active" onclick="switchTab('intro',this)">El coleccionismo</button>
+  <button class="tab-btn" onclick="switchTab('fundamentos',this)">Fundamentos</button>
+  <button class="tab-btn" onclick="switchTab('empezar',this)">Cómo empezar</button>
+  <button class="tab-btn" onclick="switchTab('conservacion',this)">Conservación</button>
+  <button class="tab-btn" onclick="switchTab('grading',this)">Grading</button>
+  <button class="tab-btn" onclick="switchTab('errores',this)">Errores</button>
+  <button class="tab-btn" onclick="switchTab('estrategia',this)">Estrategia</button>
+  <button class="tab-btn" onclick="switchTab('mercado',this)">Mercado</button>
+</nav>
+
+<main class="main">
+
+  <!-- INTRO -->
+  <div id="sec-intro" class="section active">
+    <div class="chap-header">
+      <div class="chap-label">Capítulo 1</div>
+      <div class="chap-title">El coleccionismo en 2026</div>
+      <div class="chap-sub">Afición global. Demanda constante.</div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-label">Estado del TCG</div><div class="stat-val">En crecimiento</div></div>
+      <div class="stat-card"><div class="stat-label">Perfil</div><div class="stat-val">Todas las edades</div></div>
+      <div class="stat-card"><div class="stat-label">Oportunidad</div><div class="stat-val">No es tarde</div></div>
+    </div>
+
+    <ul class="step-list">
+      <li class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Ha dejado de ser un pasatiempo infantil</div>
+          <div class="step-desc">Se ha convertido en una afición global. Millones de personas preservan cartas en todo el mundo. Pokémon sigue siendo una de las franquicias más sólidas de la historia.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Franquicia en crecimiento constante</div>
+          <div class="step-desc">El TCG no está en declive. Videojuegos, eventos y contenido digital mantienen viva la marca. Más interés = más personas queriendo cartas.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Mercado maduro y confiable</div>
+          <div class="step-desc">Existen sistemas de grading confiables, comunidades activas e información disponible. Podemos filtrar lo importante de lo irrelevante.</div>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">¿Todavía hay oportunidades? Sí</div>
+          <div class="step-desc">Nuevos sets constantes, nuevas promos exclusivas, nuevas generaciones de jugadores, cartas comunes hoy que serán raras mañana. La clave está en CÓMO coleccionas.</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="quote-box">
+      <div class="quote-text">"No necesitas conseguir miles de cartas. Necesitas criterio."</div>
+      <div class="quote-author">El Coleccionista Estratégico</div>
+    </div>
+
+    <div class="tip-box"><strong>El error más común:</strong> Coleccionar no es solo comprar. Es entender qué tienes en tus manos, cómo cuidarlo y qué decisiones tomar para que tu colección tenga valor, sentido y continuidad en el tiempo.</div>
+  </div>
+
+  <!-- FUNDAMENTOS -->
+  <div id="sec-fundamentos" class="section">
+    <div class="chap-header">
+      <div class="chap-label">Capítulo 2</div>
+      <div class="chap-title">Fundamentos del coleccionismo</div>
+      <div class="chap-sub">Entendiendo la base de todo.</div>
+    </div>
+
+    <div class="tip-box" style="margin-bottom:1.5rem;"><strong>Coleccionar no es acumular.</strong> El verdadero coleccionista elige qué tipo de cartas quiere, entiende por qué las quiere, sabe cómo cuidarlas y tiene criterio. Comprar sin entender lleva a la frustración y al abandono del hobby.</div>
+
+    <div class="chap-label" style="margin-bottom:10px; color: var(--gold);">CLASIFICACIÓN DE CARTAS</div>
+    <div class="rarity-card">
+      <div class="rarity-row">
+        <span class="badge badge-gray">C / U</span>
+        <div class="rarity-name">Comunes y poco comunes</div>
+        <div class="rarity-desc">Abundantes, impresas en masa. Raramente tienen valor individual. Importantes para el juego, no para el valor coleccionable.</div>
+      </div>
+      <div class="rarity-row">
+        <span class="badge badge-gold">HOLO</span>
+        <div class="rarity-name">Cartas raras (Holo, V, VMAX, ex)</div>
+        <div class="rarity-desc">Holográficas, ilustración especial. Más buscadas, algunas mantienen valor. Aquí inicia el interés coleccionable.</div>
+      </div>
+      <div class="rarity-row">
+        <span class="badge badge-blue">PROMO</span>
+        <div class="rarity-name">Promocionales</div>
+        <div class="rarity-desc">Eventos, cajas o colaboraciones. Su importancia depende de la distribución y demanda. Cruciales a futuro.</div>
+      </div>
+      <div class="rarity-row">
+        <span class="badge badge-red">VINTAGE</span>
+        <div class="rarity-name">Antiguas (Vintage)</div>
+        <div class="rarity-desc">Sets de primeras generaciones. Menor oferta con el tiempo. Sensibilidad extrema al estado de conservación.</div>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Fórmula del coleccionismo</div>
+      <div class="formula-row">
+        <div class="formula-item">RAREZA</div>
+        <div class="formula-plus">+</div>
+        <div class="formula-item">DEMANDA</div>
+        <div class="formula-plus">+</div>
+        <div class="formula-item">ESTADO</div>
+      </div>
+      <div class="formula-note">"Si nadie quiere la carta, su rareza no importa." — Rareza ≠ Valor Automático</div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color: var(--gold);">¿CUÁL ES TU ENFOQUE?</div>
+    <div class="two-col" style="margin-bottom:0.5rem;">
+      <div class="col-card"><div class="col-title gold">ENFOQUES POSIBLES</div>
+        <div class="col-item">Por Nostalgia</div>
+        <div class="col-item">Por Gusto Artístico</div>
+        <div class="col-item">Por Inversión a largo plazo</div>
+        <div class="col-item">Por Juego competitivo</div>
+      </div>
+      <div class="col-card right"><div class="col-title green">POR QUÉ IMPORTA</div>
+        <div class="col-item">No hay respuestas incorrectas</div>
+        <div class="col-item">Mezclarlas sin criterio es un error</div>
+        <div class="col-item">Definir tu enfoque te ayuda a comprar mejor y gastar menos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPEZAR -->
+  <div id="sec-empezar" class="section">
+    <div class="chap-header">
+      <div class="chap-label">Capítulo 3</div>
+      <div class="chap-title">Cómo empezar correctamente</div>
+      <div class="chap-sub">Estrategias iniciales para no arruinarse.</div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color: var(--gold);">GESTIÓN DE PRESUPUESTO</div>
+    <div class="two-col">
+      <div class="col-card"><div class="col-title gold">REGLA PRINCIPAL</div>
+        <div class="col-item">Nunca uses dinero destinado a necesidades básicas</div>
+        <div class="col-item">El coleccionismo debe ser una gratificación, no una carga</div>
+        <div class="col-item">0% de riesgo vital</div>
+      </div>
+      <div class="col-card right"><div class="col-title green">DISTRIBUCIÓN</div>
+        <div class="col-item">Define metas mensuales claras</div>
+        <div class="col-item">¿Cuánto es para disfrutar abriendo?</div>
+        <div class="col-item">¿Cuánto para piezas de largo plazo?</div>
+      </div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color: var(--gold);">CAMINOS: SOBRES VS CAJAS VS CARTAS</div>
+    <div class="three-col">
+      <div class="three-card">
+        <div class="three-card-title">Sobres (Boosters)</div>
+        <div class="three-card-desc">Divertidos y con emoción, pero poco eficientes para valor. Úsalos solo para disfrutar.</div>
+      </div>
+      <div class="three-card">
+        <div class="three-card-title">Cajas selladas</div>
+        <div class="three-card-desc">Mejor experiencia que sobres sueltos. Se pueden conservar cerradas. Requieren paciencia.</div>
+      </div>
+      <div class="three-card featured">
+        <div class="three-card-title" style="color:var(--gold-light);">Individuales ★ Recomendado</div>
+        <div class="three-card-desc">Sabes qué compras. Control total del presupuesto. Ideal para empezar con criterio.</div>
+      </div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color: var(--gold);">EL PODER DE INVESTIGAR</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <div class="step-num">1</div>
+        <div><div class="step-title">Evita adquisiciones por moda</div><div class="step-desc">El hype sube los precios. Comprar en el pico suele ser el peor momento.</div></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">2</div>
+        <div><div class="step-title">Revisa precios históricos</div><div class="step-desc">Usa TCGPlayer o Cardmarket para ver la evolución del precio, no solo el valor actual.</div></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">3</div>
+        <div><div class="step-title">Compara estados y ventas recientes</div><div class="step-desc">El estado de la carta es tan importante como la rareza. Una carta en mal estado vale mucho menos.</div></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">4</div>
+        <div><div class="step-title">No compres lo que no encaja en tu enfoque</div><div class="step-desc">Aunque algo esté "barato", si no encaja en tu colección, es gasto innecesario.</div></div>
+      </li>
+    </ul>
+    <div class="tip-box"><strong>"Dedicar 10 minutos a investigar te ahorra meses de frustración."</strong></div>
+  </div>
+
+  <!-- CONSERVACION -->
+  <div id="sec-conservacion" class="section">
+    <div class="chap-header">
+      <div class="chap-label">Capítulo 4</div>
+      <div class="chap-title">Conservación y cuidado</div>
+      <div class="chap-sub">Protegiendo la integridad física de tu colección.</div>
+    </div>
+
+    <div class="tip-box" style="margin-bottom:1.5rem;"><strong>Regla #1:</strong> Protege desde el día uno. No esperes a que "valga algo". Una carta puede perder gran parte de su valor sin romperse ni mojarse — la diferencia entre lo común y lo valioso es el <strong>estado</strong>.</div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">FACTORES CRÍTICOS QUE DESTRUYEN VALOR</div>
+    <div class="alert-box">
+      <strong>Daños más comunes e irreversibles:</strong><br>
+      Rayones y bordes desgastados · Doblados leves y manchas microscópicas · Daños por mala manipulación
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">PRIMERA LÍNEA DE DEFENSA</div>
+    <div class="two-col">
+      <div class="col-card"><div class="col-title gold">Fundas suaves (Penny Sleeves)</div>
+        <div class="col-item">Baratas, protección básica</div>
+        <div class="col-item">Úsalas siempre, incluso para cartas comunes</div>
+        <div class="col-item">Primera protección inmediata</div>
+      </div>
+      <div class="col-card right"><div class="col-title green">Top Loaders / Semi-rígidas</div>
+        <div class="col-item">Protección contra dobleces</div>
+        <div class="col-item">Ideales para transporte</div>
+        <div class="col-item">Nunca metas una carta sin funda previa</div>
+      </div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">ALMACENAMIENTO EN BINDERS</div>
+    <div class="three-col">
+      <div class="three-card"><div class="three-card-title">Acid-Free</div><div class="three-card-desc">Páginas sin ácido para evitar reacciones químicas que destruyan el cartón con el tiempo.</div></div>
+      <div class="three-card"><div class="three-card-title">No PVC</div><div class="three-card-desc">El plástico barato desprende aceites que manchan las cartas. Busca siempre sellos "PVC-Free".</div></div>
+      <div class="three-card"><div class="three-card-title">Side-Load</div><div class="three-card-desc">Bolsillos de carga lateral para evitar que el polvo entre y que la carta se salga accidentalmente.</div></div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">ALMACENAMIENTO CORRECTO</div>
+    <div class="two-col">
+      <div class="col-card wrong"><div class="col-title red">EVITA</div>
+        <div class="col-item">Humedad y calor excesivo</div>
+        <div class="col-item">Luz directa del sol</div>
+        <div class="col-item">Cambios bruscos de temperatura</div>
+      </div>
+      <div class="col-card right"><div class="col-title green">IDEAL</div>
+        <div class="col-item">Lugar seco y oscuro</div>
+        <div class="col-item">Temperatura estable</div>
+        <div class="col-item">Caja o contenedor cerrado</div>
+      </div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">PROTOCOLO DE MANIPULACIÓN</div>
+    <ul class="step-list">
+      <li class="step-item"><div class="step-num">✓</div><div><div class="step-title">Siempre manos limpias y secas</div><div class="step-desc">Las grasas de la piel son invisibles pero dejan marcas permanentes en la superficie.</div></div></li>
+      <li class="step-item"><div class="step-num">✓</div><div><div class="step-title">Sujetar solo por los bordes</div><div class="step-desc">Evitar tocar la superficie del arte en todo momento.</div></div></li>
+      <li class="step-item"><div class="step-num">✗</div><div><div class="step-title">Nunca dobles para "ver mejor"</div><div class="step-desc">No apoyes peso encima. No limpies con productos químicos.</div></div></li>
+    </ul>
+    <div class="tip-box"><strong>"No ahorres en la casa de tus activos más valiosos."</strong></div>
+  </div>
+
+  <!-- GRADING -->
+  <div id="sec-grading" class="section">
+    <div class="chap-header">
+      <div class="chap-label">Capítulo 5</div>
+      <div class="chap-title">Grading</div>
+      <div class="chap-sub">Certificación profesional de tus cartas.</div>
+    </div>
+
+    <div class="tip-box" style="margin-bottom:1.5rem;">El grading es el proceso donde una empresa especializada evalúa el estado, asigna una calificación y sella la carta en un encapsulado protector. <strong>Atención: No todas las cartas deben ser gradeadas.</strong></div>
+
+    <div class="three-col">
+      <div class="three-card"><div class="three-card-title">Confianza</div><div class="three-card-desc">Garantía para el comprador. Elimina dudas sobre el estado real de la carta.</div></div>
+      <div class="three-card"><div class="three-card-title">Protección</div><div class="three-card-desc">Blindaje a largo plazo. La carta queda encapsulada y protegida para siempre.</div></div>
+      <div class="three-card"><div class="three-card-title">Valor</div><div class="three-card-desc">Potencial aumento de precio en el mercado secundario para cartas populares.</div></div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">¿QUÉ EVALÚAN?</div>
+    <div class="two-col">
+      <div class="col-card"><div class="col-title gold">FACTORES DE EVALUACIÓN</div>
+        <div class="col-item"><strong style="color:var(--text);">Centrado:</strong> Simetría de los bordes</div>
+        <div class="col-item"><strong style="color:var(--text);">Superficie:</strong> Rayones, manchas, brillo</div>
+        <div class="col-item"><strong style="color:var(--text);">Esquinas:</strong> Desgaste o dobleces</div>
+        <div class="col-item"><strong style="color:var(--text);">Bordes:</strong> "Whiting" o astillado</div>
+      </div>
+      <div class="col-card right"><div class="col-title green">ESCALA DE CALIFICACIÓN (1-10)</div>
+        <div class="col-item"><strong style="color:var(--gold-light);">9-10:</strong> Calidad Alta — máximo valor</div>
+        <div class="col-item"><strong style="color:var(--text);">7-8:</strong> Buen estado — valor moderado</div>
+        <div class="col-item"><strong style="color:var(--red);">&lt; 7:</strong> Valor limitado en mercado</div>
+      </div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">PRINCIPALES EMPRESAS</div>
+    <table class="grade-table">
+      <thead><tr><th>Empresa</th><th>Perfil</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--gold);">PSA</strong></td><td>Líder de mercado. Ideal para reventa y máxima liquidez.</td></tr>
+        <tr><td><strong style="color:var(--gold);">BGS</strong></td><td>Exigencia máxima. Incluye sub-grades detallados.</td></tr>
+        <tr><td><strong style="color:var(--gold);">CGC</strong></td><td>Tecnología moderna. Popular en arte moderno de Pokémon.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">¿CUÁNDO VALE LA PENA?</div>
+    <div class="three-col">
+      <div class="three-card featured"><div class="three-card-title">1. La carta es deseada</div><div class="three-card-desc">Alta demanda en el mercado. Pokémon populares, sets icónicos.</div></div>
+      <div class="three-card featured"><div class="three-card-title">2. Está en estado perfecto</div><div class="three-card-desc">Si no puede obtener un 8+, el costo del proceso no se justifica.</div></div>
+      <div class="three-card featured"><div class="three-card-title">3. Valor gradeado &gt; costo</div><div class="three-card-desc">El precio final esperado debe superar claramente el costo del servicio.</div></div>
+    </div>
+  </div>
+
+  <!-- ERRORES -->
+  <div id="sec-errores" class="section">
+    <div class="chap-header">
+      <div class="chap-label">Capítulo 6</div>
+      <div class="chap-title">Errores del coleccionista</div>
+      <div class="chap-sub">No aprendas a base de golpes.</div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">MENTALIDAD CORRECTA VS INCORRECTA</div>
+    <div class="two-col">
+      <div class="col-card wrong"><div class="col-title red">MENTALIDAD EQUIVOCADA</div>
+        <div class="col-item">Comprar por impulso</div>
+        <div class="col-item">Seguir modas sin entenderlas</div>
+        <div class="col-item">Pensar solo en dinero rápido</div>
+        <div class="col-item">Descuidar las cartas físicamente</div>
+      </div>
+      <div class="col-card right"><div class="col-title green">MENTALIDAD CORRECTA</div>
+        <div class="col-item">Aprender antes de comprar</div>
+        <div class="col-item">Disfrutar el proceso</div>
+        <div class="col-item">Cuidar las cartas desde el día uno</div>
+        <div class="col-item">Pensar a mediano y largo plazo</div>
+      </div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">HYPE Y DESORDEN</div>
+    <div class="two-col">
+      <div class="col-card wrong"><div class="col-title red">1. Elegir por hype</div><div class="col-item" style="border:none; padding-top:0;">Compras cuando está viral (caro), el hype baja y el valor se estanca. El hype se mueve más rápido que la lógica.</div></div>
+      <div class="col-card wrong"><div class="col-title red">2. Sin enfoque</div><div class="col-item" style="border:none; padding-top:0;">Comprar un poco de todo sin relación. Resultado: colección desordenada y gasto innecesario. Es como construir sin plano.</div></div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">MÁS ERRORES FATALES</div>
+    <ul class="step-list">
+      <li class="step-item"><div class="step-num">✗</div><div><div class="step-title">Descuidar el estado</div><div class="step-desc">Un rayón hoy es una pérdida masiva mañana. No es reversible.</div></div></li>
+      <li class="step-item"><div class="step-num">✗</div><div><div class="step-title">Pensar solo en dinero</div><div class="step-desc">Lleva a frustración y abandono. Disfruta lo que tienes.</div></div></li>
+      <li class="step-item"><div class="step-num">✗</div><div><div class="step-title">Gradear todo</div><div class="step-desc">Sin revisar estado o demanda. Es gasto, no estrategia.</div></div></li>
+      <li class="step-item"><div class="step-num">✗</div><div><div class="step-title">Ir demasiado rápido</div><div class="step-desc">Las mejores colecciones se construyen con tiempo, no con prisa.</div></div></li>
+    </ul>
+
+    <div class="quote-box">
+      <div class="quote-text">"No necesitas estar siempre comprando para estar avanzando."</div>
+    </div>
+  </div>
+
+  <!-- ESTRATEGIA -->
+  <div id="sec-estrategia" class="section">
+    <div class="chap-header">
+      <div class="chap-label">Capítulo 7</div>
+      <div class="chap-title">Estrategias a largo plazo</div>
+      <div class="chap-sub">Pensando en el futuro de tu legado.</div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">COMPRADOR VS COLECCIONISTA</div>
+    <div class="two-col">
+      <div class="col-card wrong"><div class="col-title red">COMPRADOR</div>
+        <div class="col-item">Reacciona</div>
+        <div class="col-item">Compra por impulso</div>
+        <div class="col-item">Sigue modas</div>
+      </div>
+      <div class="col-card right"><div class="col-title green">COLECCIONISTA</div>
+        <div class="col-item">Observa</div>
+        <div class="col-item">Espera</div>
+        <div class="col-item">Elige con criterio</div>
+      </div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">OBJETIVOS CLAROS</div>
+    <div class="tip-box" style="margin-bottom:1rem;">¿Dónde quieres estar en 2-5 años? Define tu historia antes de comprar.</div>
+    <div class="three-col">
+      <div class="three-card featured"><div class="three-card-title">Diversifica</div><div class="three-card-desc">Modernas + Vintage. Sellado + Individuales. No pongas todo en un solo set.</div></div>
+      <div class="three-card featured"><div class="three-card-title">Paciencia</div><div class="three-card-desc">Las mejores oportunidades no son virales. Espera el momento correcto.</div></div>
+      <div class="three-card featured"><div class="three-card-title">Ajusta</div><div class="three-card-desc">Revisa y vende lo que ya no encaja en tu enfoque. Tu colección debe evolucionar.</div></div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">PACIENCIA Y MENTALIDAD FINAL</div>
+    <div class="two-col">
+      <div class="col-card"><div class="col-title gold">Paciencia estratégica</div><div class="col-item" style="border:none;padding-top:0;">Las mejores decisiones no siempre son las más rápidas ni las más populares, pero son las más sólidas.</div></div>
+      <div class="col-card right"><div class="col-title green">Constancia</div><div class="col-item" style="border:none;padding-top:0;">En el coleccionismo, la constancia de cuidar y aprender vale mucho más que la prisa por acumular.</div></div>
+    </div>
+
+    <div class="quote-box" style="margin-top:1.5rem;">
+      <div class="quote-text">"Coleccionar es DECIDIR · El Criterio protege tu DINERO · El Cuidado protege tu VALOR · La Paciencia construye COLECCIONES REALES"</div>
+    </div>
+
+    <div class="tip-box"><strong>Tu identidad como coleccionista:</strong> No existe la colección perfecta. Es un camino, no un destino. Aplica lo aprendido, sigue aprendiendo. Que tu colección refleje TUS gustos. La constancia vale más que la prisa.</div>
+  </div>
+
+  <!-- MERCADO -->
+  <div id="sec-mercado" class="section">
+    <div class="chap-header">
+      <div class="chap-label">Capítulo 8</div>
+      <div class="chap-title">El mercado: compra y venta</div>
+      <div class="chap-sub">Seguridad y criterio en las transacciones.</div>
+    </div>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">¿DÓNDE OPERAR?</div>
+    <ul class="step-list">
+      <li class="step-item">
+        <div class="step-num">1</div>
+        <div><div class="step-title">Tiendas físicas</div><div class="step-desc">Seguridad, trato directo y revisión presencial. Los precios suelen ser más altos pero el riesgo es mínimo.</div></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">2</div>
+        <div><div class="step-title">Marketplaces online (TCGPlayer, Cardmarket)</div><div class="step-desc">Variedad masiva y comparación de precios. Riesgo de descripciones engañosas — siempre revisa el historial del vendedor.</div></div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">3</div>
+        <div><div class="step-title">Comunidades</div><div class="step-desc">Mejores precios e intercambios directos. Riesgo alto de estafas sin protección — solo con personas de confianza o reputación verificada.</div></div>
+      </li>
+    </ul>
+
+    <div class="chap-label" style="margin-bottom:10px; color:var(--gold);">SEGURIDAD PRIMERO — RED FLAGS</div>
+    <div class="alert-box">
+      <strong>Alertas de posible estafa:</strong><br><br>
+      Precios demasiado bajos sin justificación · Presión para cerrar rápido · Fotos borrosas o de internet · Negativa a responder preguntas específicas sobre el estado · Vendedor sin historial o con reseñas negativas
+    </div>
+
+    <div class="tip-box"><strong>Próximos pasos:</strong> No existe la colección perfecta. Siempre habrá nuevos sets y oportunidades. Disfrutar el proceso es la clave del éxito. Tu colección debe reflejar tus gustos e historia personal. Inspírate, pero sé auténtico.</div>
+
+    <div class="quote-box" style="margin-top:1.5rem;">
+      <div class="quote-text">"Esto no es el final. Es el comienzo."</div>
+      <div class="quote-author">Guía Maestra de Coleccionismo 2026</div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  GUÍA MAESTRA 2026 · COLECCIONISMO DE ALTO NIVEL · JUAN MERCATUDO
+</footer>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
